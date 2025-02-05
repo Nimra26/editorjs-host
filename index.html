@@ -43,14 +43,19 @@
     <button class="add-column-btn" onclick="addColumn()">Add Column</button>
     
     <script>
+        let editor; // Declare editor variable outside for access in other functions
+        
         document.addEventListener("DOMContentLoaded", function() {
             // Initialize Editor.js
-            const editor = new EditorJS({
+            editor = new EditorJS({
                 holder: 'editorjs',
                 tools: {
                     header: Header,
                     list: List,
-                    table: Table
+                    table: {
+                        class: Table,
+                        inlineToolbar: true,
+                    }
                 }
             });
 
@@ -66,23 +71,27 @@
 
             // Function to dynamically add a column to the table
             window.addColumn = function () {
-                const currentTable = editor.blocks.getBlockById('table');  // Get current table
-                if (currentTable) {
-                    const tableData = currentTable.data.content;
+                const blocks = editor.blocks.getBlocks();  // Get all blocks
+                const tableBlock = blocks.find(block => block.type === 'table');  // Find the table block
+
+                if (tableBlock) {
+                    const tableData = tableBlock.data.content;
                     const rows = tableData.length;
 
                     // Add a new column to each row
-                    tableData.forEach((row, index) => {
-                        row.push({ text: `Column ${index + 1}` });  // Add a placeholder for the new column
+                    tableData.forEach((row) => {
+                        row.push({ text: `New Column` });  // Add a placeholder for the new column
                     });
 
                     // Update the table content
-                    editor.blocks.update(currentTable.id, {
+                    editor.blocks.update(tableBlock.id, {
                         type: "table",
                         data: {
                             content: tableData
                         }
                     });
+                } else {
+                    alert("No table found in the content!");
                 }
             };
         });
