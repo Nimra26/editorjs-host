@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor.js with Dynamic Table</title>
+    <title>Dynamic Table</title>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
@@ -79,7 +79,7 @@
                     const rows = tableData.length;
 
                     // Add a new column to each row
-                    tableData.forEach((row) => {
+                    tableData.forEach(row => {
                         row.push({ text: `New Column` });  // Add a placeholder for the new column
                     });
 
