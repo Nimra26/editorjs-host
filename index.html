@@ -3,31 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor.js with Table</title>
+    <title>Editor.js with Dynamic Table</title>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #editorjs {
+            border: 1px solid #ddd;
+            padding: 10px;
+            min-height: 300px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .add-column-btn {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+    <h2>Editor.js with Dynamic Table</h2>
     <div id="editorjs"></div>
     <button onclick="saveContent()">Save</button>
+    <button class="add-column-btn" onclick="addColumn()">Add Column</button>
     
     <script>
-        const editor = new EditorJS({
-            holder: 'editorjs',
-            tools: {
-                header: Header,
-                list: List,
-                table: Table
-            }
-        });
-
-        function saveContent() {
-            editor.save().then((outputData) => {
-                console.log("Saved Data:", outputData);
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize Editor.js
+            const editor = new EditorJS({
+                holder: 'editorjs',
+                tools: {
+                    header: Header,
+                    list: List,
+                    table: Table
+                }
             });
-        }
+
+            // Function to save content
+            window.saveContent = function () {
+                editor.save().then((outputData) => {
+                    console.log("Saved Data:", outputData);
+                    alert("Content Saved! Check the console for data.");
+                }).catch((error) => {
+                    console.error("Saving failed:", error);
+                });
+            };
+
+            // Function to dynamically add a column to the table
+            window.addColumn = function () {
+                const currentTable = editor.blocks.getBlockById('table');  // Get current table
+                if (currentTable) {
+                    const tableData = currentTable.data.content;
+                    const rows = tableData.length;
+
+                    // Add a new column to each row
+                    tableData.forEach((row, index) => {
+                        row.push({ text: `Column ${index + 1}` });  // Add a placeholder for the new column
+                    });
+
+                    // Update the table content
+                    editor.blocks.update(currentTable.id, {
+                        type: "table",
+                        data: {
+                            content: tableData
+                        }
+                    });
+                }
+            };
+        });
     </script>
 </body>
 </html>
