@@ -89,8 +89,8 @@ function insertTable(rows, cols) {
 // Add this event listener to your existing code
 document.addEventListener('click', function(e) {
     if (e.target.id === 'insert-table') {
-        const rows = parseInt(prompt('Enter number of rows'));
-        const cols = parseInt(prompt('Enter number of columns'));
+        const rows = 3;
+        const cols = 3;
         insertTable(rows, cols);
     }
 });
