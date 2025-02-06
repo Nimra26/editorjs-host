@@ -64,3 +64,33 @@ function fileHandle(value) {
 		html2pdf(content).save(filename.value);
 	}
 }
+
+
+// Add these functions to your existing code
+function insertTable(rows, cols) {
+    const table = document.createElement('table');
+    
+    for (let i = 0; i < rows; i++) {
+        const row = document.createElement('tr');
+        
+        for (let j = 0; j < cols; j++) {
+            const cell = document.createElement('td');
+            row.appendChild(cell);
+        }
+        
+        table.appendChild(row);
+    }
+    
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    range.insertNode(table);
+}
+
+// Add this event listener to your existing code
+document.addEventListener('click', function(e) {
+    if (e.target.id === 'insert-table') {
+        const rows = parseInt(prompt('Enter number of rows'));
+        const cols = parseInt(prompt('Enter number of columns'));
+        insertTable(rows, cols);
+    }
+});

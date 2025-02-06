@@ -115,3 +115,6 @@ a {
 #show-code[data-active="true"] {
 	background: #eee;
 }
+#insert-table {
+    margin-left: 5px;
+}
