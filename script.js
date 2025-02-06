@@ -66,24 +66,59 @@ function fileHandle(value) {
 }
 
 
-// Add these functions to your existing code
-function insertTable(rows, cols) {
-    const table = document.createElement('table');
+function insertTable() {
+    // const rows = parseInt(prompt('Enter number of rows'));
+    // const cols = parseInt(prompt('Enter number of columns'));
     
+    if (!rows || !cols || rows <= 0 || cols <= 0) {
+        alert('Please enter valid numbers');
+        return;
+    }
+    
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    
+    // Create table with proper styling
+    const table = document.createElement('table');
+    table.style.borderCollapse = 'collapse';
+    table.style.width = '100%';
+    table.style.margin = '10px 0';
+    
+    // Create rows and cells
     for (let i = 0; i < rows; i++) {
         const row = document.createElement('tr');
         
         for (let j = 0; j < cols; j++) {
             const cell = document.createElement('td');
+            cell.innerHTML = '&nbsp;';
+            cell.style.padding = '8px';
+            cell.style.border = '1px solid #ddd';
+            cell.style.minWidth = '50px';
             row.appendChild(cell);
         }
         
         table.appendChild(row);
     }
     
-    const selection = window.getSelection();
-    const range = selection.getRangeAt(0);
-    range.insertNode(table);
+    // Handle contenteditable container properly
+    const container = document.getElementById('content');
+    if (range.startContainer.parentNode === container) {
+        // If cursor is directly in container, create paragraph first
+        const p = document.createElement('p');
+        p.appendChild(table);
+        range.insertNode(p);
+    } else {
+        // If cursor is in another element, insert table directly
+        range.insertNode(table);
+    }
+    
+    // Set focus to first cell
+    const firstCell = table.rows[0].cells[0];
+    const newRange = document.createRange();
+    newRange.selectNodeContents(firstCell);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+    firstCell.focus();
 }
 
 // Add this event listener to your existing code

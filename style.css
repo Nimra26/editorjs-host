@@ -115,6 +115,18 @@ a {
 #show-code[data-active="true"] {
 	background: #eee;
 }
-#insert-table {
-    margin-left: 5px;
+#content table {
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+#content td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    min-width: 50px;
+}
+
+#content td:focus {
+    outline: 2px solid #007bff;
+    outline-offset: -2px;
 }
